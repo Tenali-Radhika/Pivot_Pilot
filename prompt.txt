@@ -1,0 +1,259 @@
+Prompt 1 — Project setup and UI foundation:
+
+We are building a product called PivotPilot for the Product Space Agentic AI Hackathon 2026.
+
+The selected problem statement is Career Pivot Coach.
+
+PivotPilot is a voice-first AI career transition agent.
+
+Its tagline is Turn career ambition into measurable progress.
+
+The product should help candidates analyse their experience against real job descriptions, identify skill gaps, create personalised learning roadmaps, receive portfolio project suggestions, practise interviews through natural voice dictation, and track their career progress.
+
+First inspect the existing workspace carefully. Do not overwrite working code or existing project configurations.
+
+If the workspace is empty, create the following architecture:
+
+Frontend:
+React, TypeScript, Vite and Tailwind CSS.
+
+Backend:
+Python FastAPI.
+
+Persistence:
+Browser localStorage for the hackathon MVP. Do not introduce a database unless absolutely necessary.
+
+Create four primary navigation sections:
+
+One: Profile and Skill Gaps.
+Two: Learning Roadmap and Projects.
+Three: Mock Interview.
+Four: Progress and Applications.
+
+Design a premium, modern career intelligence dashboard. Use dark navy or charcoal as the foundation, violet as the primary accent, professional typography, clean cards and responsive layouts.
+
+Make Mock Interview the most prominent feature.
+
+The first screen should include a professional overview of the candidate, target role, career readiness indicators, skill gaps and suggested next actions.
+
+Build a functional interface, not a static landing page.
+
+Every button must have a meaningful action.
+
+Do not add authentication, payment systems, external job scraping or unnecessary integrations.
+
+Create a clear project structure and a BUILD_STATUS.md file documenting the implementation.
+
+Start by creating the application foundation and running it successfully.
+
+Prompt 2 — Career profile and AI skill-gap intelligence:
+
+
+Now implement the complete Profile and Skill Gap Intelligence module in PivotPilot.
+
+The candidate should be able to enter or paste their resume text and select one target role. Our demonstration target role is GenAI Engineer.
+
+Allow the candidate to add three real job descriptions.
+
+For each job description collect the company name, job title, original source URL, posting date and description text.
+
+Build a backend API endpoint called POST /api/analyze-career.
+
+The endpoint should accept the candidate profile and all three job descriptions.
+
+Use one configured LLM provider only. First check whether an Anthropic API key or Gemini API key is already configured in the local environment. Use an existing valid key without printing or exposing its value. If neither is configured, implement a clearly labelled demo fallback without pretending that live AI analysis has occurred.
+
+The LLM must return structured JSON containing:
+
+One: Skills required by the target role.
+
+Two: Frequency of each skill across the supplied job descriptions.
+
+Three: Candidate skill status: demonstrated, partially demonstrated or not evidenced in resume.
+
+Four: Supporting resume evidence for demonstrated skills.
+
+Five: Supporting job description sources for every major requirement.
+
+Six: Skill gap priority as high, medium or low.
+
+Seven: A six-week personalised learning roadmap.
+
+Eight: Three portfolio project recommendations directly connected to identified gaps.
+
+Do not assume that a skill is missing simply because a candidate has not mentioned it. Use the status not evidenced in resume where appropriate.
+
+Do not invent candidate achievements, employment history, job listings or certifications.
+
+Validate the LLM response using Pydantic.
+
+Cache the analysis result so we do not repeatedly call the LLM when demonstrating the same candidate and job descriptions.
+
+Build a visually clear dashboard displaying skill coverage, gap priorities, evidence and job description frequency.
+
+Ensure all data persists in localStorage on the frontend.
+
+Test the complete workflow.
+
+Prompt 3 — Mock Interview: our hero feature:
+
+
+Now build the most important feature of PivotPilot: the Voice-First AI Mock Interview Studio.
+
+The primary target is an interview for a GenAI Engineer role.
+
+The candidate should be able to select an interview category such as Python, Generative AI, RAG, Machine Learning or System Design.
+
+Generate contextual interview questions using a simple question bank based on the target role and the candidate's identified skill gaps.
+
+The main interview answer input must support natural speech dictated directly through Wispr Flow.
+
+Do not build a separate speech recognition system or claim a direct Wispr Flow SDK integration. Wispr Flow will dictate naturally into the application's answer input field.
+
+Allow the candidate to see their original dictated answer before submitting it.
+
+When the candidate submits their answer, call POST /api/evaluate-interview.
+
+Use the configured LLM provider to evaluate the answer.
+
+The evaluation must assess four dimensions:
+
+Structure out of five.
+Technical depth out of five.
+Relevance out of five.
+Clarity out of five.
+
+Return the original answer, a cleaned and structured answer, dimension scores, overall score out of twenty, strengths, improvement suggestions and a contextual follow-up question.
+
+The cleaned answer must preserve the candidate's original meaning and factual claims. It must not invent technical knowledge that was not present in the original answer.
+
+Do not penalise the candidate merely for accent, harmless fillers or speaking style. Evaluate technical reasoning and communication substance.
+
+Display the result in a premium interview scorecard.
+
+Save question history, original answers, cleaned answers and evaluation scores to localStorage.
+
+Show how an improvement area connects back to the candidate's skill-gap analysis.
+
+Make the entire interview workflow functional and visually impressive.
+
+This is our hero feature. Prioritise its quality over decorative features.
+
+Prompt 4 — Roadmap, portfolio projects and adaptive progress:
+
+Now implement the Learning Roadmap and Progress Intelligence modules.
+
+Use the six-week roadmap generated by the career analysis endpoint.
+
+Display weekly learning objectives, specific tasks, skill associations and completion status.
+
+The candidate must be able to mark each task as completed and see their progress update immediately.
+
+Display the three portfolio project recommendations generated by the skill-gap analysis. Every project must clearly map to one or more identified skill gaps.
+
+Implement deterministic adaptive replanning in application code.
+
+For example, when a candidate receives a score below three out of five in technical depth, prioritise an additional practice task for that area.
+
+When an interview score improves, reflect that improvement in the candidate's progress indicators and next actions.
+
+Repeated weak performance should increase the priority of relevant practice activities.
+
+Do not make another LLM call for replanning.
+
+Keep the original roadmap history and clearly display updated priorities.
+
+All task completions and interview results must persist after refreshing the browser.
+
+Prompt 5 — Application tracker and demo data:
+
+
+Now complete the Progress and Applications section.
+
+Create a functional job application tracker.
+
+Each application should contain company name, job title, job family, application date, application source and application status.
+
+Support statuses such as Applied, Assessment, Interview, Offer and Rejected.
+
+Add a small analytics section displaying total applications, responses, interviews and response rates.
+
+Show insights by job family when sufficient data exists.
+
+Add approximately six sample applications to demonstrate the dashboard.
+
+Important: All preloaded applications must be visibly marked as synthetic demo data. Do not claim these are real applications or real hiring outcomes.
+
+Do not present insights from six synthetic records as statistically reliable hiring predictions.
+
+Keep the tracker simple, responsive and integrated with the overall PivotPilot dashboard.
+
+Persist actual user modifications in localStorage.
+
+Test all interactions.
+
+Prompt 6 — Final integration, testing and submission readiness:
+
+
+Now conduct a complete product quality review of PivotPilot.
+
+Test the entire candidate journey:
+
+Resume intake.
+Target role selection.
+Three job description inputs.
+Career skill-gap analysis.
+Learning roadmap generation.
+Portfolio project recommendations.
+Voice-dictated mock interview answers.
+AI answer evaluation.
+Interview score history.
+Adaptive replanning.
+Application tracking.
+
+Fix all broken navigation, non-functional buttons, invalid states, backend errors and UI inconsistencies.
+
+Ensure that the frontend and backend run correctly using their documented development commands.
+
+Make sure the application works on a standard desktop browser and is responsive.
+
+Ensure the Claude or Gemini API key remains exclusively in backend environment variables. Never expose secrets in frontend source code, browser storage, logs or Git commits.
+
+Create a .gitignore that excludes .env files and other secrets.
+
+Create a safe .env.example containing variable names but no actual credentials.
+
+Create a README.md explaining the product, architecture, features, installation steps, required environment variables and how to run the application.
+
+Clearly document the Wispr Flow workflow: candidates dictate directly into the interview response field, while Wispr Flow is also used to build the product through Antigravity.
+
+Clearly distinguish live AI mode from demo fallback mode and identify synthetic application data.
+
+Do not introduce new features. Prioritise reliability, completeness and demo readiness.
+
+Finally, provide a list of working features, remaining limitations and exact commands to start the frontend and backend.
+
+
+Prompt 7 — Last-mile UI and demo correction
+
+
+Review PivotPilot as if you are a hackathon judge seeing it for the first time.
+
+Improve the visual hierarchy, remove clutter and make the four main navigation sections feel like one cohesive product.
+
+Make the dashboard immediately communicate the candidate's career goal, most important skill gap and recommended next action.
+
+Make Mock Interview the standout experience.
+
+Ensure the original dictated answer and AI-cleaned answer are easy to compare.
+
+Make all scorecards explain why a candidate received their scores.
+
+Ensure the product clearly shows how interview results influence the learning roadmap.
+
+Remove redundant charts, placeholder content and decorative elements that do not improve functionality.
+
+Do not change the backend architecture or break working features.
+
+Run the application and perform a final end-to-end smoke test.
+
