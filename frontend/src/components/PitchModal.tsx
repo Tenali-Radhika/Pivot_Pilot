@@ -38,9 +38,14 @@ export const PitchModal: React.FC<PitchModalProps> = ({
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-white">AI Career Pivot Elevator Pitch</h3>
+              <div className="flex items-center space-x-2">
+                <h3 className="text-base font-bold text-white">Personalized Career Pitch Generator</h3>
+                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
+                  Deterministic Template Synthesis
+                </span>
+              </div>
               <p className="text-xs text-slate-400">
-                Tailored positioning for <span className="text-violet-300 font-semibold">{application.company}</span> — {application.role}
+                Positioning synthesized deterministically for <span className="text-violet-300 font-semibold">{application.company}</span> — {application.role}
               </p>
             </div>
           </div>

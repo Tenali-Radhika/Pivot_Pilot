@@ -136,6 +136,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <span className="text-xs font-semibold text-slate-200 group-hover:text-white">
                     {candidateName}
                   </span>
+                  {candidateName.includes('Alex Chen') && (
+                    <span className="text-[9px] text-amber-300 font-bold bg-amber-950/70 px-1 rounded border border-amber-800" title="Seeded synthetic demonstration profile">
+                      Demo
+                    </span>
+                  )}
                   <span className="text-[10px] text-violet-300 font-mono font-bold bg-violet-950/80 px-1.5 rounded border border-violet-800">
                     {overallReadiness}% Ready
                   </span>

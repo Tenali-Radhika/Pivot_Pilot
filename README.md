@@ -15,9 +15,9 @@ Pivot Pilot is a voice-first AI career transition agent built to guide technical
 
 - **Frontend:** React 19, TypeScript, Vite 6, Tailwind CSS, Lucide React Icons
 - **Backend:** Python 3.10+ / FastAPI, Pydantic V2 data contracts, Uvicorn ASGI
-- **AI Engine:** Dual-mode architecture supporting Google Gemini (Gemini 2.5 Flash) and Anthropic Claude (Claude 3.5 Sonnet) with a deterministic offline fallback
+- **AI Engine:** Dual-mode architecture supporting Google Gemini (`gemini-2.5-flash` via `google-genai`) and Anthropic Claude (`claude-3-5-sonnet-20241022` via `anthropic`) with automatic environment loading via `python-dotenv` and a deterministic offline fallback
 - **State & Persistence:** Browser `localStorage` for the hackathon MVP — zero external database dependencies
-- **Voice Ingestion:** Native integration with **Wispr Flow** speech dictation
+- **Voice Ingestion:** Natural speech workflow via external **Wispr Flow** desktop dictation into focused input field
 
 ```
 Pivot_Pilot/
@@ -71,10 +71,10 @@ Pivot_Pilot/
 ## 2. Four Primary Navigation Sections
 
 ### Section 1: Profile & Skill Gaps
-- **Target Role Setup:** Demonstrates a transition from *Senior Software / Frontend Engineer* to *Gen AI Engineer*.
-- **Three Real Job Description Benchmarks:** Benchmarked against live requirements from **Anthropic** (*Applied AI Systems*), **Cohere** (*Solutions & RAG*), and **Databricks** (*Mosaic AI Applications*).
-- **Candidate Status Classifications:** Evaluates requirements strictly as `"demonstrated"`, `"partially demonstrated"`, or `"not evidenced in the resume"` (never assuming missing skills or fabricating credentials).
-- **Grounded Evidence Citations:** Highlights direct quote excerpts from the candidate's resume and links them to the exact employer listings.
+- **Target Role Setup:** Demonstrates a transition from *Senior Software / Frontend Engineer* to *Gen AI Engineer*. Seeded with a synthetic demonstration profile for **Alex Chen** (FinPulse Labs), which can be replaced or customized at any time via the *Edit Setup* modal.
+- **Three Job Description Benchmarks:** Benchmarked against illustrative sample requirements based on industry postings from **Anthropic** (*Applied AI Systems*), **Cohere** (*Solutions & RAG*), and **Databricks** (*Staff Generative AI Applications Engineer*). Frequencies and job sources are derived dynamically from whichever job descriptions are provided.
+- **Candidate Status Classifications:** Evaluates requirements strictly as `"demonstrated"`, `"partially demonstrated"`, or `"not evidenced in the resume"`.
+- **Grounded Resume Evidence:** Highlights verbatim quote excerpts extracted directly from the candidate's actual resume text. If no explicit quotation exists, it returns `"No explicit evidence found in the supplied resume."` without fabricating achievements, employers, or experience.
 - **SHA-256 Analysis Caching:** Automatically hashes candidate profile and JD payloads to prevent unnecessary LLM invocations during repeated demonstrations.
 
 ### Section 2: Learning Roadmap & Projects
@@ -88,7 +88,7 @@ Pivot_Pilot/
 
 ### Section 3: Hero Feature — Voice-First AI Mock Interview Studio
 - **Junior Engineer Target:** Rehearses foundational and applied questions across 5 core domains: *Python*, *Generative AI*, *RAG*, *Machine Learning*, and *System Design*.
-- **Natural Wispr Flow Voice Input:** Candidates dictate their answers naturally using spoken speech. The raw dictated answer is previewed on screen before submission.
+- **Wispr Flow Desktop Dictation Workflow:** Candidates click into the answer field and speak naturally using their external **Wispr Flow** desktop application. Dictated speech streams directly into the focused field without requiring an embedded browser speech recognition SDK. Candidates review and edit their raw text before submitting.
 - **4-Dimension Scorecard (out of 20):**
   - **Structure** (1–5)
   - **Technical Depth** (1–5)
@@ -97,10 +97,10 @@ Pivot_Pilot/
 - **Fact-Preserving Answer Cleaning:** Strips conversational verbal fillers (`um`, `uh`, `you know`) and outputs two views:
   1. *Cleaned Structured Answer:* Formatted into logical technical bullets (Concept, Execution, Impact).
   2. *Cleaned Fluent Prose:* Fluent conversational prose.
-  *Strict rule: Preserves the candidate's original facts and claims without hallucinating technical knowledge.*
-- **Fairness & Accent Neutrality:** Evaluates technical substance and reasoning; candidates are never penalized for harmless fillers, speaking tempo, or accents.
+  *Strict rule: Preserves the candidate's original factual claims without inventing technical knowledge.*
+- **Fairness & Substance-First Evaluation:** Evaluates technical substance and reasoning; candidates are never penalized for harmless fillers, speaking tempo, or accents.
 - **Contextual Probing:** Probes with 2 follow-up technical questions based directly on the candidate's previous response.
-- **Local History:** All questions, original dictations, cleaned answers, and scorecard dimensions persist in `localStorage`.
+- **Local History:** All questions, original dictations, cleaned answers, and scorecard dimensions persist in browser `localStorage`.
 
 ### Section 4: Progress & Applications Tracker
 - **Job Application Pipeline:** Tracks company name, job title, job family, application date, application source, and application status.
@@ -108,19 +108,19 @@ Pivot_Pilot/
 - **Conversion Analytics:** Real-time computation of total applications, responses, interviews, and response rates.
 - **Job Family Insights:** Granular breakdown across target job families (*Generative AI & Agents*, *Backend & Cloud Systems*, *Full-Stack AI Engineering*).
 - **Synthetic Baseline Disclosure:** Preloaded demo applications are visibly marked with `[Synthetic Demo Data]` badges and disclaimer banners.
-- **Tailored AI Elevator Pitch:** 1-click generator creates customized 30-second pitches and cover note hooks for hiring managers.
+- **Personalized Career Pitch Generator:** Deterministic template synthesis generates tailored 30-second elevator pitches and cover note hooks based on target company, role, and candidate strengths.
 
 ---
 
-## 3. Wispr Flow Dual Workflow
+## 3. Wispr Flow Workflow & Transparency
 
-Wispr Flow plays a central role in both the **user experience** and the **development** of Pivot Pilot:
+Wispr Flow plays a dual role in both the **candidate experience** and the **development** of Pivot Pilot:
 
-### 1. In-App Candidate Voice Dictation
-- In the Mock Interview Studio, candidates dictate their answers using natural speech via Wispr Flow.
-- Wispr Flow dictates directly into the studio's answer input with sub-second latency.
-- The candidate reviews their verbatim dictated speech in real time before submitting it for evaluation.
-- The backend cleans filler words while rigorously preserving the candidate's factual statements.
+### 1. In-App Candidate Dictation Workflow
+- Candidates use the external **Wispr Flow desktop app** to dictate spoken answers directly into the Mock Interview Studio's focused answer field.
+- The application does not claim a custom Wispr Flow SDK or in-browser audio capture plugin. Instead, it relies on the desktop app's native ability to type dictated speech into any active input.
+- Candidates can review, edit, or adjust their verbatim dictated text before triggering AI evaluation.
+- For testing environments without the desktop app active, a *Paste Sample Dictation* button allows instant review of natural spoken answers.
 
 ### 2. Product Development Voice Companion
 - Pivot Pilot was developed with Wispr Flow acting as the voice dictation companion alongside Antigravity.
@@ -160,9 +160,21 @@ Pivot Pilot is built with an intelligent provider detection engine:
 - Python 3.10, 3.11, 3.12, or 3.13
 - Node.js 18+ and npm
 
-### Environment Setup
+### 1. Install Backend Dependencies
+Install the required packages, including `fastapi`, `uvicorn`, `pydantic`, `anthropic`, `google-genai`, and `python-dotenv`:
+```bash
+pip install -r backend/requirements.txt
+```
 
-1. Copy the example environment file:
+### 2. Install Frontend Dependencies
+```bash
+npm install --prefix frontend
+```
+
+### 3. Environment Configuration
+Pivot Pilot automatically loads environment variables from either `.env` in the project root or `backend/.env` using `python-dotenv` before any API requests or routes are initialized:
+
+1. Copy the example environment template:
    ```bash
    cp .env.example .env
    ```
@@ -176,26 +188,26 @@ Pivot Pilot is built with an intelligent provider detection engine:
    PORT=8000
    HOST=127.0.0.1
    ```
-   *If omitted, Pivot Pilot automatically operates in its high-fidelity deterministic demo fallback mode.*
+   *If omitted or if network connectivity is unavailable, Pivot Pilot automatically operates in its high-fidelity deterministic demo fallback mode without pretending that live AI analysis has occurred.*
 
 ---
 
 ### Starting the Application
 
 #### Option A: Unified Launcher (Recommended)
-Run both backend and frontend concurrently in a single terminal:
+Run both backend and frontend concurrently in a single terminal with automated environment loading and engine status reporting:
 ```bash
 python run_dev.py
 ```
 
-#### Option B: Individual Service Launchers
+#### Option B: Standalone Startup Commands
 
 **1. Start the FastAPI Backend:**
 ```bash
 python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 - Swagger API Docs: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-- Health Check: [http://127.0.0.1:8000/api/health](http://127.0.0.1:8000/api/health)
+- Health & Provider Telemetry: [http://127.0.0.1:8000/api/health](http://127.0.0.1:8000/api/health)
 
 **2. Start the Vite Frontend:**
 ```bash
@@ -212,40 +224,46 @@ npm run dev --prefix frontend
 Pivot Pilot includes dedicated regression test suites:
 
 ```bash
-# 1. Complete end-to-end candidate journey validation:
+# 1. Custom 3-JD dynamic matching & resume evidence verification:
+python -m backend.test_custom_jds_and_evidence
+
+# 2. Complete end-to-end candidate journey validation:
 python -m backend.test_complete_journey
 
-# 2. Career intelligence & 6-week roadmap schema test:
+# 3. Career intelligence & 6-week roadmap schema test:
 python -m backend.test_career_intelligence
 
-# 3. Voice interview studio & 4D evaluation test:
+# 4. Voice interview studio & 4D evaluation test:
 python -m backend.test_interview_studio
 
-# 4. Job application tracker & analytics test:
+# 5. Job application tracker & analytics test:
 python -m backend.test_applications_tracker
 
-# 5. Frontend TypeScript & Vite production build:
+# 6. Frontend TypeScript & Vite production build:
 npm run build --prefix frontend
 ```
 
 ---
 
-## 8. Working Features & Current Limitations
+## 8. Working Features & Constraints
 
 ### Working Features
 - ✅ **Resume Intake & Target Role Customization:** Edit candidate resume, target role, and 3 job descriptions with 1-click demo resets.
-- ✅ **Career Skill Gap Analysis (`POST /api/analyze-career`):** 8 skills evaluated across 3 real JDs with grounded resume citations and status constraints.
+- ✅ **Career Skill Gap Analysis (`POST /api/analyze-career`):** 8 core skills evaluated across 3 job descriptions with dynamic frequency derivation and verbatim resume quote citations.
+- ✅ **Resume Evidence Integrity:** Quotes extracted strictly from verbatim lines in the candidate resume; returns `"No explicit evidence found in the supplied resume."` when absent.
 - ✅ **SHA-256 Request Caching:** Instant repeated analysis runs with zero duplicate model calls.
 - ✅ **6-Week Curriculum:** Interactive weekly tasks, skill associations, and instant progress recalculation upon checkoff.
-- ✅ **3 Portfolio Project Blueprints:** Architectural specs, tech stacks, verification criteria, and copyable resume bullets.
-- ✅ **Deterministic Adaptive Replanning:** Automatically injects practice drills for low technical depth (< 3/5) without LLM calls.
-- ✅ **Voice-First Mock Interview Studio:** Wispr Flow dictation field, sample dictation toggle, 4D scorecard (/20), and contextual follow-ups.
+- ✅ **3 Portfolio Project Blueprints:** Architectural specs, tech stacks, verification criteria, and copyable resume bullets directly mapped to identified skill gaps.
+- ✅ **Deterministic Adaptive Replanning:** Automatically injects practice drills for low technical depth (< 3/5) without additional LLM calls.
+- ✅ **Voice-First Mock Interview Studio:** External Wispr Flow desktop dictation workflow, paste sample dictation toggle, 4D scorecard (/20), and contextual follow-ups.
 - ✅ **Dual Evaluate Endpoints:** Registered both `POST /api/evaluate-interview` and `POST /aps/evaluate-interview`.
-- ✅ **Fact-Preserving Speech Cleaning:** Converts raw spoken speech to structured bullets and fluent prose without hallucinating facts.
-- ✅ **Job Application Tracker:** CRUD application management, status updates, job family analytics, and AI elevator pitches.
+- ✅ **Fact-Preserving Speech Cleaning:** Converts raw spoken speech to structured bullets and fluent prose while preserving the candidate's factual claims.
+- ✅ **Personalized Career Pitch Generator:** Deterministic template synthesis tailored to company, role, and candidate strengths.
+- ✅ **Job Application Tracker:** CRUD application management, status updates, job family analytics, and conversion metrics.
 - ✅ **Local Storage Persistence:** 100% browser persistence across all tabs and page reloads.
 
-### Current Limitations
+### Operational Constraints & Disclosures
+- **External Wispr Flow Dictation:** Wispr Flow is an external desktop application that inputs speech into focused text inputs; Pivot Pilot does not require or claim a native in-browser audio capture SDK.
 - **Browser Audio Synthesis:** Relies on the browser's native `window.speechSynthesis` API for reading interview questions aloud; voice timbre varies by operating system.
-- **Microphone Hardware Permissions:** In browser environments where microphone access is blocked or restricted, candidates can use the sample dictation generator or paste Wispr Flow transcripts directly.
+- **Synthetic Demonstration Disclosures:** Preloaded candidate data (Alex Chen / FinPulse Labs) and preloaded job applications are explicitly disclosed as synthetic demo baselines for hackathon evaluation.
 - **Hackathon State Scope:** Uses browser `localStorage` intentionally for hackathon simplicity and zero-configuration demonstration rather than a multi-tenant cloud SQL database.

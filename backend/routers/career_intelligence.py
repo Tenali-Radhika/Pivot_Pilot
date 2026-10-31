@@ -143,12 +143,13 @@ Tools & DevOps: Docker, Git, GitHub Actions CI/CD, Jest, Vite, Webpack, Postman.
 AI Exploration: OpenAI API, Prompt Engineering basics, ChromaDB tutorial sandbox.
 """
 
+# Illustrative sample job descriptions (unverified seeded demonstration data)
 DEMO_JDS = [
     JobDescriptionInput(
         company_name="Anthropic",
         job_title="Generative AI Engineer — Applied AI Systems",
         source_url="https://boards.greenhouse.io/anthropic/jobs/4392812004",
-        posting_date="October 2026",
+        posting_date="Illustrative Sample Posting",
         description_text="""
         Anthropic is hiring a Generative AI Engineer to join our Applied AI Systems team. In this role, you will design, 
         evaluate, and deploy production-grade agentic workflows powered by Claude. 
@@ -165,7 +166,7 @@ DEMO_JDS = [
         company_name="Cohere",
         job_title="Generative AI Solutions & RAG Engineer",
         source_url="https://jobs.lever.co/cohere/a89b412e-71cf-4d92-91f8-085341203b82",
-        posting_date="October 2026",
+        posting_date="Illustrative Sample Posting",
         description_text="""
         Join Cohere's Enterprise AI Solutions team as a Generative AI Engineer. You will partner with Fortune 500 customers 
         to deploy custom retrieval and generation architectures on high-scale enterprise knowledge bases.
@@ -182,9 +183,9 @@ DEMO_JDS = [
         company_name="Databricks",
         job_title="Staff Generative AI Applications Engineer",
         source_url="https://databricks.com/company/careers/ai-engineering-59218",
-        posting_date="October 2026",
+        posting_date="Illustrative Sample Posting",
         description_text="""
-        Databricks is seeking a Generative AI Applications Engineer to build enterprise Gen AI tools and autonomous agents.
+        Databricks is seeking a Staff Generative AI Applications Engineer to build enterprise Gen AI tools and autonomous agents.
         What You'll Do:
         - Architect resilient agentic loops with multi-step reasoning, dynamic tool selection, and state persistence.
         - Implement and optimize enterprise RAG pipelines over millions of unstructured documents and tabular data.
@@ -211,115 +212,145 @@ def get_configured_llm_provider() -> Optional[str]:
     return None
 
 # -------------------------------------------------------------
+# Strict Grounded Resume Evidence Extraction Helper
+# -------------------------------------------------------------
+def extract_resume_evidence(
+    resume_text: str,
+    skill_keywords: List[str],
+    full_evidence_groups: Optional[List[List[str]]] = None
+) -> tuple[str, str]:
+    """
+    Extracts evidence strictly from candidate's actual resume text.
+    Never invents or returns text that does not exist in the resume.
+    If no evidence matches, returns status 'not evidenced in the resume' and
+    'No explicit evidence found in the supplied resume.'
+    """
+    # Break resume into clean non-empty lines/sentences
+    lines = []
+    for raw_line in resume_text.splitlines():
+        line = raw_line.strip()
+        if len(line) >= 5:
+            lines.append(line)
+    
+    # Find lines in the actual resume that contain any of the skill keywords
+    matched_lines = []
+    for line in lines:
+        line_lower = line.lower()
+        if any(kw.lower() in line_lower for kw in skill_keywords):
+            matched_lines.append(line)
+            
+    if not matched_lines:
+        return "not evidenced in the resume", "No explicit evidence found in the supplied resume."
+    
+    # Evidence must be the exact verbatim text found in the resume
+    evidence = matched_lines[0]
+    
+    # Determine if demonstrated vs partially demonstrated based on full groups match
+    if full_evidence_groups:
+        all_groups_matched = True
+        full_text_lower = resume_text.lower()
+        for group in full_evidence_groups:
+            if not any(g_kw.lower() in full_text_lower for g_kw in group):
+                all_groups_matched = False
+                break
+        status = "demonstrated" if all_groups_matched else "partially demonstrated"
+    else:
+        status = "partially demonstrated"
+        
+    return status, evidence
+
+# -------------------------------------------------------------
 # Deterministic / Demo Fallback Analyzer
 # -------------------------------------------------------------
 def run_deterministic_analysis(
     candidate: CandidateProfileInput,
     job_descriptions: List[JobDescriptionInput]
 ) -> CareerAnalysisResponse:
-    resume = candidate.resume_text.lower()
-    
-    # 8 Core Target Skills for Gen AI Engineer evaluated across the 3 JDs
+    # 8 Core Target Skills for Gen AI Engineer with dynamic JD keyword matching
     skills_def = [
         {
             "id": "skill-1",
             "name": "Stateful Multi-Agent Orchestration (LangGraph / StateGraph)",
             "category": "Agentic AI Systems",
-            "required_by": ["Anthropic", "Cohere", "Databricks"],
-            "rationale": "All 3 target roles explicitly require building autonomous multi-step reasoning agents with state persistence and cyclic loops.",
-            "quick_win": "Build a 3-agent cyclic researcher/evaluator state machine using LangGraph and FastAPI in 15 hours.",
-            "eval": lambda r: (
-                ("partially demonstrated" if "agent" in r or "openai" in r else "not evidenced in the resume"),
-                ('Integrated OpenAI chat completion endpoints into internal customer support dashboard using server-sent events (SSE)' if 'openai' in r else 'No explicit mention of LangGraph, multi-agent coordination, or cyclic state machines found in provided resume text.')
-            )
+            "jd_keywords": ["multi-agent", "agentic", "langgraph", "state machine", "stategraph", "autonomous agent", "agent orchestration", "multi-step reasoning", "agent loop"],
+            "resume_keywords": ["langgraph", "stategraph", "multi-agent", "agentic", "state machine", "agent"],
+            "full_groups": [["langgraph", "stategraph", "multi-agent"], ["state machine", "agentic"]],
+            "rationale": "High-priority requirement for building autonomous multi-step reasoning agents with state persistence and cyclic loops.",
+            "quick_win": "Build a 3-agent cyclic researcher/evaluator state machine using LangGraph and FastAPI in 15 hours."
         },
         {
             "id": "skill-2",
             "name": "Hybrid RAG & Vector Search (Dense Embeddings + BM25 + Re-ranking)",
             "category": "Data & Retrieval Architectures",
-            "required_by": ["Anthropic", "Cohere", "Databricks"],
-            "rationale": "Universal requirement across 100% of analyzed job descriptions to power accurate enterprise question answering over private corpora.",
-            "quick_win": "Implement reciprocal rank fusion (BM25 + Qdrant vectors) with cross-encoder re-ranking on a 100-doc benchmark.",
-            "eval": lambda r: (
-                ("partially demonstrated" if "chromadb" in r or "vector" in r else "not evidenced in the resume"),
-                ('AI Exploration: OpenAI API, Prompt Engineering basics, ChromaDB tutorial sandbox.' if 'chromadb' in r else 'No explicit mention of production vector retrieval, chunking strategies, or re-ranking in provided resume text.')
-            )
+            "jd_keywords": ["rag", "retrieval", "hybrid search", "bm25", "re-ranking", "rerank", "cross-encoder", "embeddings", "dense vector"],
+            "resume_keywords": ["hybrid rag", "bm25", "re-ranking", "reranker", "dense vector", "chromadb", "vector", "embedding", "retrieval", "rag"],
+            "full_groups": [["bm25", "hybrid"], ["re-ranking", "reranker", "cross-encoder"]],
+            "rationale": "Requirement across target job descriptions to power accurate enterprise question answering over private knowledge bases.",
+            "quick_win": "Implement reciprocal rank fusion (BM25 + Qdrant vectors) with cross-encoder re-ranking on a 100-doc benchmark."
         },
         {
             "id": "skill-3",
             "name": "Quantitative LLM Evaluation & Guardrails (Ragas / TruLens / MLflow)",
             "category": "Testing & Observability",
-            "required_by": ["Anthropic", "Databricks"],
-            "rationale": "High-priority differentiator demanded by top AI labs to measure faithfulness, answer relevance, and hallucination reduction scientifically.",
-            "quick_win": "Run an automated evaluation suite comparing 3 prompt variants across 30 synthetic test questions using Ragas.",
-            "eval": lambda r: (
-                ("not evidenced in the resume"),
-                ("No explicit mention found in provided resume text. Candidate has unit/integration testing with Jest/Cypress, but no LLM-specific evaluation frameworks.")
-            )
+            "jd_keywords": ["evaluation", "evals", "ragas", "trulens", "benchmarking", "faithfulness", "hallucination", "mlflow"],
+            "resume_keywords": ["ragas", "trulens", "prompt evaluation", "faithfulness benchmark", "llm evaluate", "synthetic golden"],
+            "full_groups": [["ragas", "trulens", "mlflow"]],
+            "rationale": "Differentiator demanded by leading AI teams to measure faithfulness, answer relevance, and hallucination reduction scientifically.",
+            "quick_win": "Run an automated evaluation suite comparing 3 prompt variants across 30 synthetic test questions using Ragas."
         },
         {
             "id": "skill-4",
             "name": "Production Python Microservices & Streaming (FastAPI / SSE)",
             "category": "Backend Engineering",
-            "required_by": ["Anthropic", "Cohere", "Databricks"],
+            "jd_keywords": ["python", "fastapi", "streaming", "sse", "server-sent events", "microservices", "async"],
+            "resume_keywords": ["python", "fastapi", "server-sent events", "sse", "streaming", "microservices"],
+            "full_groups": [["python"], ["fastapi", "server-sent events", "sse", "streaming"]],
             "rationale": "Foundational runtime for Gen AI applications to stream tokens asynchronously with sub-second perceived latency.",
-            "quick_win": "Deploy an asynchronous FastAPI streaming endpoint validating tool schemas with Pydantic.",
-            "eval": lambda r: (
-                ("demonstrated" if "python" in r and "fastapi" in r else ("partially demonstrated" if "python" in r else "not evidenced in the resume")),
-                ('Authored internal Python scripts for API payload validation, automated regression test runs, and synthetic mock data generation; integrated streaming endpoints using server-sent events (SSE).' if 'python' in r else 'No explicit mention of Python in provided resume text.')
-            )
+            "quick_win": "Deploy an asynchronous FastAPI streaming endpoint validating tool schemas with Pydantic."
         },
         {
             "id": "skill-5",
             "name": "Structured Outputs & Strict JSON Schema Tool Calling (Pydantic / Instructor)",
             "category": "LLM Primitives",
-            "required_by": ["Anthropic", "Cohere", "Databricks"],
-            "rationale": "Non-negotiable requirement for deterministic tool calling and integrating probabilistic models with enterprise databases.",
-            "quick_win": "Write strict Pydantic models with Instructor to enforce guaranteed JSON return schemas from LLM tool dispatches.",
-            "eval": lambda r: (
-                ("partially demonstrated" if "json schema" in r or "api payload validation" in r else "not evidenced in the resume"),
-                ('Collaborated with backend engineers to define JSON schema contracts for customer billing and account workflows; Authored internal Python scripts for API payload validation.' if 'json schema' in r else 'No explicit mention of structured tool calling frameworks in resume text.')
-            )
+            "jd_keywords": ["structured output", "json schema", "tool-calling", "tool calling", "pydantic", "instructor", "function calling"],
+            "resume_keywords": ["json schema", "pydantic", "instructor", "structured output", "tool calling", "payload validation"],
+            "full_groups": [["pydantic", "instructor"], ["json schema", "tool calling", "tool-calling"]],
+            "rationale": "Essential requirement for deterministic tool calling and integrating probabilistic models with enterprise databases.",
+            "quick_win": "Write strict Pydantic models with Instructor to enforce guaranteed JSON return schemas from LLM tool dispatches."
         },
         {
             "id": "skill-6",
             "name": "Vector Database Management & Indexing (Qdrant / Pinecone / Chroma)",
             "category": "Data & Retrieval Architectures",
-            "required_by": ["Anthropic", "Cohere"],
+            "jd_keywords": ["vector database", "vector index", "qdrant", "pinecone", "chroma", "weaviate", "milvus", "hnsw"],
+            "resume_keywords": ["qdrant", "pinecone", "chromadb", "chroma", "weaviate", "vector database", "milvus"],
+            "full_groups": [["qdrant", "pinecone", "milvus"]],
             "rationale": "Required to index, filter by metadata, and query multi-tenant enterprise embeddings efficiently.",
-            "quick_win": "Spin up a local Qdrant Docker container and index 5,000 document chunks with custom payload filtering.",
-            "eval": lambda r: (
-                ("partially demonstrated" if "chromadb" in r else "not evidenced in the resume"),
-                ('AI Exploration: ChromaDB tutorial sandbox; Docker containerization.' if 'chromadb' in r else 'No explicit mention of vector database deployment in provided resume text.')
-            )
+            "quick_win": "Spin up a local Qdrant Docker container and index 5,000 document chunks with custom payload filtering."
         },
         {
             "id": "skill-7",
             "name": "Safety Guardrails & Prompt Injection Defense (NeMo / Llama-Guard)",
             "category": "Security & Alignment",
-            "required_by": ["Databricks"],
+            "jd_keywords": ["guardrails", "nemo", "llama-guard", "prompt injection", "safety filter", "data exfiltration"],
+            "resume_keywords": ["nemo guardrails", "llama-guard", "prompt injection", "guardrails", "input sanitization"],
+            "full_groups": [["nemo", "llama-guard", "prompt injection"]],
             "rationale": "Critical for enterprise deployments handling sensitive corporate data without leaking system prompts or unauthorized records.",
-            "quick_win": "Integrate an input sanitization and output classification guardrail into an existing agent loop.",
-            "eval": lambda r: (
-                ("not evidenced in the resume"),
-                ("No explicit mention found in provided resume text. No prompt injection defense or guardrail frameworks listed.")
-            )
+            "quick_win": "Integrate an input sanitization and output classification guardrail into an existing agent loop."
         },
         {
             "id": "skill-8",
             "name": "Containerization & Cloud CI/CD Deployment (Docker / GitHub Actions)",
             "category": "DevOps & Infrastructure",
-            "required_by": ["Databricks", "Anthropic"],
+            "jd_keywords": ["docker", "container", "ci/cd", "github actions", "kubernetes", "cloud deployment"],
+            "resume_keywords": ["docker", "github actions", "ci/cd", "containerization", "kubernetes"],
+            "full_groups": [["docker"], ["github actions", "ci/cd", "kubernetes"]],
             "rationale": "Required to package microservices, manage reproducible dependencies, and run automated evaluation pipelines in CI.",
-            "quick_win": "Package your multi-agent service into a lightweight multi-stage Docker container with automated GitHub Actions testing.",
-            "eval": lambda r: (
-                ("demonstrated" if "docker" in r and "github actions" in r else ("partially demonstrated" if "docker" in r else "not evidenced in the resume")),
-                ('Containerized frontend microservices using Docker and managed continuous deployment via GitHub Actions CI/CD pipelines.' if 'docker' in r else 'No explicit mention of Docker/CI found in provided resume text.')
-            )
+            "quick_win": "Package your multi-agent service into a lightweight multi-stage Docker container with automated GitHub Actions testing."
         }
     ]
 
-    total_jds = len(job_descriptions) if job_descriptions else 3
+    total_jds = len(job_descriptions) if job_descriptions else 1
     analyzed_skills: List[SkillAnalysisItem] = []
     
     demonstrated_cnt = 0
@@ -328,30 +359,33 @@ def run_deterministic_analysis(
     high_priority_cnt = 0
 
     for s in skills_def:
-        freq = len(s["required_by"])
-        pct = int((freq / total_jds) * 100)
-        
-        # Match sources
-        sources = [
-            f"{company} ({jd.job_title} · {jd.posting_date})"
-            for company in s["required_by"]
-            for jd in job_descriptions
-            if company.lower() in jd.company_name.lower()
-        ]
-        if not sources:
-            sources = [f"{c} ({candidate.target_role})" for c in s["required_by"]]
+        # Dynamically match against the actual supplied job descriptions
+        matched_jds = []
+        for jd in job_descriptions:
+            jd_text = f"{jd.job_title} {jd.description_text}".lower()
+            if any(kw.lower() in jd_text for kw in s["jd_keywords"]):
+                matched_jds.append(jd)
 
-        status, evidence = s["eval"](resume)
+        freq = len(matched_jds)
+        pct = int((freq / total_jds) * 100) if total_jds > 0 else 0
+        sources = [f"{jd.company_name} ({jd.job_title})" for jd in matched_jds]
+
+        # Extract evidence strictly from actual candidate resume
+        status, evidence = extract_resume_evidence(
+            candidate.resume_text,
+            s["resume_keywords"],
+            s.get("full_groups")
+        )
         
         if status == "demonstrated":
             demonstrated_cnt += 1
             gap_prio = "low"
         elif status == "partially demonstrated":
             partial_cnt += 1
-            gap_prio = "high" if freq >= 2 else "medium"
+            gap_prio = "high" if freq >= 2 else ("medium" if freq == 1 else "low")
         else:
             not_evidenced_cnt += 1
-            gap_prio = "high" if freq >= 2 else "medium"
+            gap_prio = "high" if freq >= 2 else ("medium" if freq == 1 else "low")
 
         if gap_prio == "high":
             high_priority_cnt += 1
@@ -375,14 +409,13 @@ def run_deterministic_analysis(
 
     # Compute overall coverage score
     total_skills = len(analyzed_skills)
-    coverage_score = int(((demonstrated_cnt * 1.0) + (partial_cnt * 0.5)) / total_skills * 100)
+    coverage_score = int(((demonstrated_cnt * 1.0) + (partial_cnt * 0.5)) / total_skills * 100) if total_skills > 0 else 0
 
     exec_summary = (
-        f"Analysis of 3 verified target job descriptions for {candidate.target_role} reveals strong transferable systems "
-        f"experience ({demonstrated_cnt} demonstrated, {partial_cnt} partially demonstrated), with {high_priority_cnt} high-priority gaps centered on "
-        f"stateful multi-agent orchestration (LangGraph), quantitative LLM evaluation (Ragas), and hybrid vector retrieval. "
-        f"Crucially, while skills like LLM evaluation are not evidenced in the resume, your strong background in software test rigor "
-        f"and streaming architectures positions you to close these gaps quickly with 3 targeted portfolio projects."
+        f"Analysis of {total_jds} supplied target job descriptions for {candidate.target_role} reveals "
+        f"{demonstrated_cnt} demonstrated, {partial_cnt} partially demonstrated, and {not_evidenced_cnt} not evidenced skills, with {high_priority_cnt} high-priority gaps. "
+        f"Gaps are prioritized based on requirements extracted directly from your supplied job descriptions. "
+        f"Skills not found in your resume are labeled 'not evidenced in the resume' without assuming missing competency."
     )
 
     roadmap = LearningRoadmap(

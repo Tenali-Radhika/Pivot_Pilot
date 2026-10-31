@@ -476,11 +476,11 @@ export const MockInterviewsView: React.FC<MockInterviewsViewProps> = ({
                   <div className="flex items-center space-x-2">
                     <span className="text-sm font-bold text-white">Wispr Flow Dictation Input</span>
                     <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                      Natural Speech Ready
+                      External Desktop Dictation
                     </span>
                   </div>
                   <p className="text-xs text-slate-400">
-                    Dictate naturally using Wispr Flow into this input field. You can review and edit your raw text before submitting.
+                    Click the input field below and speak using your external Wispr Flow desktop app. Dictated speech streams directly into this field. Review or edit before submitting.
                   </p>
                 </div>
               </div>
@@ -530,7 +530,7 @@ export const MockInterviewsView: React.FC<MockInterviewsViewProps> = ({
                 value={dictatedAnswer}
                 onFocus={() => setIsTimerActive(true)}
                 onChange={(e) => setDictatedAnswer(e.target.value)}
-                placeholder="Click here and dictate using Wispr Flow, or type directly... Speak naturally — harmless fillers ('um', 'uh') will not be penalized during technical reasoning evaluation."
+                placeholder="Click here and dictate using your external Wispr Flow desktop app, or type directly... Speak naturally — harmless fillers ('um', 'uh') will not be penalized during technical reasoning evaluation."
                 className="w-full bg-slate-950/90 border border-slate-800 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 rounded-2xl p-4 text-sm text-slate-100 placeholder-slate-500 font-sans leading-relaxed resize-y focus:outline-none transition-all"
               />
             </div>
@@ -821,7 +821,7 @@ export const MockInterviewsView: React.FC<MockInterviewsViewProps> = ({
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
                           <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-                          <span>AI Cleaned & Structured (Zero Hallucination)</span>
+                          <span>AI Cleaned & Structured (Fact-Preserved)</span>
                         </span>
                         <button
                           onClick={() => handleCopyCurrentAnswer(

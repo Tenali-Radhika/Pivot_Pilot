@@ -617,14 +617,14 @@ export const ProgressApplicationsView: React.FC<ProgressApplicationsViewProps> =
                     </select>
                   </div>
 
-                  {/* AI Elevator Pitch Trigger */}
+                  {/* Personalized Career Pitch Trigger */}
                   <button
                     onClick={() => onSelectApplicationForPitch(app)}
                     className="px-3 py-1.5 rounded-lg text-xs font-bold bg-violet-950/60 hover:bg-violet-900/60 text-violet-300 border border-violet-800/60 flex items-center space-x-1.5 transition-all"
-                    title="Generate tailored 30-second elevator pitch and cover note hook"
+                    title="Generate personalized career pitch and cover note using deterministic template synthesis"
                   >
                     <Sparkles className="w-3.5 h-3.5 text-violet-400" />
-                    <span>Generate AI Pitch</span>
+                    <span>Generate Career Pitch</span>
                   </button>
 
                   {/* Delete Button */}

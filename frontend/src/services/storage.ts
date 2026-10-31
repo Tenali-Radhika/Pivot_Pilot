@@ -52,7 +52,7 @@ export const DEMO_JDS: JobDescriptionInput[] = [
     company_name: "Anthropic",
     job_title: "Generative AI Engineer — Applied AI Systems",
     source_url: "https://boards.greenhouse.io/anthropic/jobs/4392812004",
-    posting_date: "October 2026",
+    posting_date: "Illustrative Sample Posting",
     description_text: `Anthropic is hiring a Generative AI Engineer to join our Applied AI Systems team. In this role, you will design, evaluate, and deploy production-grade agentic workflows powered by Claude.
 Responsibilities & Requirements:
 - Deep experience with LLM orchestration frameworks, stateful multi-agent graphs (such as LangGraph, LlamaIndex, or custom state machines).
@@ -66,7 +66,7 @@ Responsibilities & Requirements:
     company_name: "Cohere",
     job_title: "Generative AI Solutions & RAG Engineer",
     source_url: "https://jobs.lever.co/cohere/a89b412e-71cf-4d92-91f8-085341203b82",
-    posting_date: "October 2026",
+    posting_date: "Illustrative Sample Posting",
     description_text: `Join Cohere's Enterprise AI Solutions team as a Generative AI Engineer. You will partner with Fortune 500 customers to deploy custom retrieval and generation architectures on high-scale enterprise knowledge bases.
 Key Qualifications:
 - Hands-on experience engineering advanced RAG architectures: recursive document chunking, metadata enrichment, hybrid search, and Cohere Re-ranker integration.
@@ -80,7 +80,7 @@ Key Qualifications:
     company_name: "Databricks",
     job_title: "Staff Generative AI Applications Engineer",
     source_url: "https://databricks.com/company/careers/ai-engineering-59218",
-    posting_date: "October 2026",
+    posting_date: "Illustrative Sample Posting",
     description_text: `Databricks is seeking a Generative AI Applications Engineer to build enterprise Gen AI tools and autonomous agents.
 What You'll Do:
 - Architect resilient agentic loops with multi-step reasoning, dynamic tool selection, and state persistence.
@@ -130,7 +130,7 @@ export const SYNTHETIC_SAMPLE_APPLICATIONS: ApplicationItem[] = [
   {
     id: "app-synthetic-3",
     company: "Databricks Mosaic AI",
-    role: "Generative AI Solutions Architect",
+    role: "Staff Generative AI Applications Engineer",
     job_family: "Generative AI & Agents",
     date_applied: "2026-10-12",
     source: "Wellfound",

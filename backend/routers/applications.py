@@ -72,7 +72,7 @@ SAMPLE_APPLICATIONS: List[ApplicationItem] = [
     ApplicationItem(
         id="app-synthetic-3",
         company="Databricks Mosaic AI",
-        role="Generative AI Solutions Architect",
+        role="Staff Generative AI Applications Engineer",
         job_family="Generative AI & Agents",
         date_applied="2026-10-12",
         source="Wellfound",

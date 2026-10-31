@@ -81,6 +81,27 @@ export const ProfileSkillGapsView: React.FC<ProfileSkillGapsViewProps> = ({
 
   return (
     <div className="space-y-8 animate-fadeIn">
+
+      {/* SYNTHETIC CANDIDATE & DEMO DATA DISCLOSURE BANNER */}
+      {candidateName.includes('Alex Chen') && (
+        <div className="p-3.5 rounded-2xl bg-slate-900/90 border border-violet-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+          <div className="flex items-center space-x-2.5">
+            <span className="px-2 py-0.5 rounded-md bg-violet-500/20 text-violet-300 font-bold uppercase tracking-wider text-[10px] border border-violet-500/30">
+              Synthetic Demo Profile
+            </span>
+            <span className="text-slate-300">
+              Currently viewing seeded demonstration profile for <strong>Alex Chen</strong> (FinPulse Labs). All career records and sample job postings are illustrative.
+            </span>
+          </div>
+          <button
+            onClick={onOpenEditorModal}
+            className="flex items-center space-x-1 px-3 py-1 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-semibold text-xs whitespace-nowrap self-start sm:self-auto transition-colors"
+          >
+            <Edit3 className="w-3.5 h-3.5" />
+            <span>Customize with Your Resume</span>
+          </button>
+        </div>
+      )}
       
       {/* 1. EXECUTIVE SPOTLIGHT TRIAD (IMMEDIATELY ANSWERS GOAL, TOP GAP, NEXT ACTION) */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -177,7 +198,7 @@ export const ProfileSkillGapsView: React.FC<ProfileSkillGapsViewProps> = ({
           <div className="flex items-center space-x-2">
             <Building className="w-4 h-4 text-violet-400" />
             <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300">
-              Verified Target Job Description Benchmarks (3 Live Industry Postings)
+              Target Job Description Benchmarks (Illustrative Sample Postings)
             </h3>
           </div>
           <div className="flex items-center space-x-2 text-xs">
@@ -218,7 +239,7 @@ export const ProfileSkillGapsView: React.FC<ProfileSkillGapsViewProps> = ({
                 {jd.job_title}
               </p>
               <div className="flex items-center space-x-1 text-[10px] font-semibold text-violet-400">
-                <span>View verified listing</span>
+                <span>View sample listing</span>
                 <ExternalLink className="w-3 h-3" />
               </div>
             </a>
