@@ -22,7 +22,7 @@ def main():
     frontend_dir = os.path.join(root_dir, "frontend")
 
     print("=" * 60)
-    print("  🚀 PIVOT PILOT — Voice-First AI Career Transition Agent")
+    print("  [PIVOT PILOT] Voice-First AI Career Transition Agent")
     print("  Tagline: 'Turn career ambition into measurable progress.'")
     print("  Hackathon: Agentic AI Hackathon 2026")
     print("=" * 60)
@@ -35,7 +35,7 @@ def main():
     elif has_anthropic:
         print("  [AI Engine] Anthropic Claude API configured (Live AI Mode)")
     else:
-        print("  [AI Engine] No API keys detected — Running Deterministic Demo Fallback Mode")
+        print("  [AI Engine] No API keys detected - Running Deterministic Demo Fallback Mode")
     print("=" * 60)
 
     print("\nStarting FastAPI Backend (http://127.0.0.1:8000)...")
@@ -58,9 +58,9 @@ def main():
         env=os.environ.copy()
     )
 
-    print("\n✨ Both servers are live!")
-    print("   👉 Frontend: http://localhost:5173")
-    print("   👉 Backend API & Swagger Docs: http://127.0.0.1:8000/docs")
+    print("\n>>> Both servers are live!")
+    print("   -> Frontend: http://localhost:5173")
+    print("   -> Backend API & Swagger Docs: http://127.0.0.1:8000/docs")
     print("\nPress Ctrl+C to terminate both servers.")
 
     try:
